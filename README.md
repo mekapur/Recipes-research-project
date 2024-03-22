@@ -92,16 +92,178 @@ There are only 4 missing columns - name, description, average_rating, rating
 As such, I believe none of the columns are NMAR. I think this is true because there are only 2 columns that aren't MD - name, description.
 In these two columns, the missing values cannot be NMAR - there is no reason for someone not to provide the name of their meal, or the description. Therefore, we believe NONE of the columns are NMAR.
 
+<iframe
+  src="assets/plot3.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+Permutation Test for calories vs. Missingness in Average Rating
+
+P-value for calories: 0.0
+
+We conducted a permutation test to examine whether there's a significant difference in the mean calories between recipes with missing and non-missing 'average_rating' values. The observed mean difference in calories was found to be 0.0, and the permutation test yielded a p-value of 0.0. This indicates that the observed difference is statistically significant, suggesting a potential association between the missingness in 'average_rating' and the calories of recipes.
+
+<iframe
+  src="assets/plot4.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+Permutation Test for Minutes vs. Missingness in Average Rating
 
 P-value for dependency of 'average_rating' on 'minutes': 0.542
 
+We also conducted a permutation test to investigate the dependency of 'average_rating' on the 'minutes' column. The observed p-value for this test was 0.542, indicating that we fail to reject the null hypothesis. This suggests that there's no significant relationship between the average rating of recipes and the duration of time required to prepare them.
 
+## Hypothesis Testing
 
+Null Hypothesis:
+There is no relationship between the number of calories in a recipe and its average rating.
 
+Alternative Hypothesis:
+Greater the number of calories, greater the average rating of the recipe.
 
+Test Statistic:
+Total Variation Distance (TVD) was chosen as the test statistic. TVD measures the difference between two probability distributions. In this context, it quantifies the discrepancy between the distribution of average ratings for recipes with low, moderate, and high calorie counts. TVD is suitable for comparing distributions and quantifying the difference between them. It allows us to assess the divergence between the distribution of average ratings for recipes with different calorie levels, providing insights into the relationship between these variables.
 
+Significance Level:
+We chose a significance level of α = 0.05, which is a common threshold for hypothesis testing.
 
+Resulting p-value:
+After conducting the permutation test with TVD as the test statistic, we obtained a p-value of 0.0.
 
+Conclusion:
+With a p-value of 0.0, which is less than the chosen significance level of 0.05, we reject the null hypothesis. This indicates strong evidence against the hypothesis that there is no relationship between calories and average rating. Therefore, we conclude that there is a statistically significant relationship between the number of calories in a recipe and its average rating. Specifically, recipes with higher calorie counts tend to have higher average ratings, supporting our alternative hypothesis.
 
+## Framing a Prediction Problem
+
+Prediction Problem and Type:
+The prediction problem in this scenario is to predict the average rating category of recipes based on various features. This is a classification problem as we are categorizing recipes into different rating categories. This would qualify as a multiclass classification beacuse we would be predicting ratings as 'low', 'medium' or 'high'
+
+Response Variable:
+The response variable (target variable) is average_rating_cat, which represents the categorized average rating of recipes. This variable was chosen because it provides a clear and meaningful measure of the quality or popularity of a recipe, making it suitable for prediction.
+
+Accuracy: Since we are dealing with a multiclass classification problem and the classes are not heavily imbalanced, accuracy provides a straightforward and intuitive measure of overall model performance. It represents the proportion of correct predictions across all classes, making it easy to interpret and compare different models.
+
+## Baseline Model
+
+Model Description:
+The model used in this analysis is a Random Forest Classifier, a type of ensemble learning method that constructs multiple decision trees during training and outputs the mode of the classes (classification) or the average prediction (regression) of the individual trees.
+
+Features in the Model:
+
+Quantitative Features:
+
+minutes: The time required to prepare the recipe.
+ 
+n_ingredients: The number of ingredients used in the recipe.
+ 
+Ordinal Features:
+ 
+calories_category: Categorized calories into Low, Moderate, and High.
+ 
+Nominal Features (After Encoding):
+ 
+average_rating_cat: The target variable representing the categorized average rating of recipes.
+
+Performance of the Model:
+
+The baseline model achieved an accuracy of approximately 88.03% on the test dataset.
+
+Model Evaluation:
+
+Accuracy Score: The accuracy score of 88.03% indicates that the model correctly predicted the average rating category for around 88% of the recipes in the test dataset.
+Interpretation: While an accuracy of 88.03% is relatively high, it's essential to consider the specific context and requirements of the problem. In some cases, such as when the classes are imbalanced or misclassification costs vary, other metrics like precision, recall, or F1-score may provide a more comprehensive evaluation. Additionally, further analysis, including feature importance and model interpretation, can provide insights into the model's behavior and potential areas for improvement.
+
+## Final Model
+
+Features Added:
+
+Two new features were engineered using the QuantileTransformer:
+
+Transformed average_rating: Applied QuantileTransformer to transform the average_rating feature to follow a normal distribution. This transformation can help mitigate the impact of outliers and skewed distributions, making the data more suitable for modeling algorithms that assume normality.
+
+Justification for Feature Engineering:
+
+Normalizing Numeric Features: By transforming average_rating to follow a normal distribution, we ensure that the feature has a consistent scale and distribution, which can improve the performance of certain modeling algorithms, such as RandomForestClassifier.
+
+Modeling Algorithm:
+
+Random Forest Classifier: Random Forest is an ensemble learning method that constructs multiple decision trees during training and outputs the mode of the classes (classification) or the average prediction (regression) of the individual trees. It's known for its robustness to overfitting, handling of missing values, and ability to capture non-linear relationships in the data.
+
+Hyperparameters and Hyperparameter Tuning:
+
+Hyperparameters Tuned:
+
+n_estimators: Number of trees in the forest.
+
+max_depth: Maximum depth of the trees.
+
+min_samples_split: Minimum number of samples required to split an internal node.
+
+Grid Search: Used GridSearchCV to search for the best combination of hyperparameters by exhaustively trying all combinations from a specified grid of hyperparameters.
+
+Scoring Metric: Evaluated hyperparameters based on accuracy, as it is a suitable metric for classification tasks when classes are balanced.
+
+Model Performance and Improvement:
+
+Best Hyperparameters:
+
+n_estimators: 10
+
+max_depth: None
+
+min_samples_split: 10
+
+Final Model Accuracy: The accuracy of the final model on the test dataset is 100%.
+
+Comparison with Baseline Model: The final model's accuracy of 100% represents a significant improvement over the baseline model's accuracy of approximately 88.03%. This improvement suggests that the feature engineering and hyperparameter tuning processes effectively enhanced the model's predictive performance.
+
+## Fairness Analysis
+
+Groups Selected:
+
+Group X: Recipes with a low number of ingredients (simpler recipes)
+
+Group Y: Recipes with a high number of ingredients (more complex recipes)
+
+Evaluation Metric:
+
+Accuracy (since we are dealing with a classification problem)
+
+Null Hypothesis:
+
+Our model is fair. Its accuracy for recipes with a high number of ingredients and recipes with a low number of ingredients are roughly the same, and any differences are due to random chance.
+
+Alternative Hypothesis:
+
+Our model is unfair. Its accuracy for recipes with a high number of ingredients is lower than its accuracy for recipes with a low number of ingredients.
+
+Test Statistic:
+
+Difference in accuracy between Group X and Group Y.
+
+Significance Level:
+
+α = 0.05
+
+Result:
+
+Precision for Group X: 1.0
+
+Precision for Group Y: 1.0
+
+Test Statistic (Precision difference): 0.0
+
+p-value: 0.482
+
+Null Hypothesis: Our model is fair. Its precision for low calorie and high calorie recipes are roughly the same, and any differences are due to random chance.
+
+Alternative Hypothesis: Our model is unfair. Its precision for low calorie recipes is lower than its precision for high calorie recipes.
+
+Significance Level: 0.05
+
+Conclusion: Fail to reject null hypothesis. There is no evidence to suggest that the model's precision differs significantly between low and high calorie recipes.
 
 

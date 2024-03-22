@@ -89,7 +89,7 @@ For example, for recipes with an average rating between 0 and 1, there are 697 r
 
 There are only 4 missing columns - name, description, average_rating, rating
 
-As such, we believe NONE of the columns are NMAR. We think this is true because there are only 2 columns that aren't MD - name, description.
+As such, I believe none of the columns are NMAR. I think this is true because there are only 2 columns that aren't MD - name, description.
 In these two columns, the missing values cannot be NMAR - there is no reason for someone not to provide the name of their meal, or the description. Therefore, we believe NONE of the columns are NMAR.
 
 

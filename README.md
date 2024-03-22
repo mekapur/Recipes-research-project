@@ -68,7 +68,29 @@ Relationship between calories and average_rating
   frameborder="0"
 ></iframe>
 
+This plot shows the distribution of calories across different categories of average ratings for recipes.
 
+Interesting Aggregates 
+
+| rating_range | Mean Calories | Median Calories | Max Calories | Min Calories | Calories Std Dev | Recipe Count |
+|--------------|---------------|-----------------|--------------|--------------|------------------|--------------|
+| 0-1          | 457.46        | 279.3           | 5475.2       | 0.0          | 645.63           | 697          |
+| 1-2          | 464.26        | 319.4           | 13101.5      | 8.0          | 796.71           | 789          |
+| 2-3          | 448.24        | 311.2           | 17551.6      | 0.0          | 701.32           | 3969         |
+| 3-4          | 435.76        | 315.2           | 16894.9      | 0.0          | 591.72           | 23407        |
+| 4-5          | 415.40        | 299.0           | 45609.0      | 0.0          | 575.14           | 202790       |
+
+
+This pivot table summarizes statistics related to calories for recipes categorized into different average rating ranges.
+It includes columns such as mean, median, maximum, minimum, standard deviation, and count of calories for each rating range.
+For example, for recipes with an average rating between 0 and 1, there are 697 recipes. The mean calorie value for these recipes is approximately 457.46, with a median of 279.3. The maximum calorie count is 5475.2, and the minimum is 0.
+
+## Assessment of Missingness
+
+There are only 4 missing columns - name, description, average_rating, rating
+
+As such, we believe NONE of the columns are NMAR. We think this is true because there are only 2 columns that aren't MD - name, description.
+In these two columns, the missing values cannot be NMAR - there is no reason for someone not to provide the name of their meal, or the description. Therefore, we believe NONE of the columns are NMAR.
 
 
 

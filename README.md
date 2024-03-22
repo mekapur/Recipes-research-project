@@ -93,7 +93,7 @@ As such, I believe none of the columns are NMAR. I think this is true because th
 In these two columns, the missing values cannot be NMAR - there is no reason for someone not to provide the name of their meal, or the description. Therefore, we believe NONE of the columns are NMAR.
 
 
-
+P-value for dependency of 'average_rating' on 'minutes': 0.542
 
 
 
